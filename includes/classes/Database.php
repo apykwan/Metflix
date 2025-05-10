@@ -4,17 +4,10 @@ declare(strict_types=1);
 
 namespace classes;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-
-$dotenv = \Dotenv\Dotenv::createImmutable(dirname(dirname(__DIR__)));
-$dotenv->load();
+require __DIR__ . "/../../config.php";
 
 use \PDO;
 use \PDOException;
-
-ob_start();
-session_start();
-date_default_timezone_set("America/Los_Angeles");
 
 class Database
 {

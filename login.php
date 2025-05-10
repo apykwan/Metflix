@@ -1,10 +1,22 @@
 <?php
-  if (isset($_POST['submitButton'])) {
-    $firstName = $_POST['firstName'];
-    echo $firstName;
+include 'vendor/autoload.php';
+require_once "config.php";
 
-    var_dump($_POST);
+use classes\{FormSanitizer, Database, Account, Constants};
+
+$account = new Account(Database::getInstance()->getConnection());
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitButton'])) {
+  $userName = FormSanitizer::sanitizeFormUsername($_POST['userName']);
+  $password = FormSanitizer::sanitizeFormPassword($_POST['password']);
+
+  $success = $account->login($userName, $password);
+  if ($success) {
+    $_SESSION["userLoggedIn"] = $username;
+    header("Location: index.php");
+    exit();
   }
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +38,7 @@
         <span>To continue to Metflix</span>
       </div>
       <form method="POST">
+        <?php echo $account->getError(Constants::LOGIN_FAIL); ?>
         <input type="text" name="userName" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="submit" name="submitButton" value="SUBMIT" required>

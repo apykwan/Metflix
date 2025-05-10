@@ -14,4 +14,5 @@ class Constants {
   const EMAIL_TAKEN = "Email has already been taken";
   const PASSWORD_NOT_MATCH = "Passwords don't match";
   const PASSWORD_LENGTH = "Password must be between 4 and 25 characters";
+  const LOGIN_FAIL = "Your username or password was inccorect";
 }

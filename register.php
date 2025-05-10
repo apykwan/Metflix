@@ -14,14 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitButton'])) {
   $password = FormSanitizer::sanitizeFormPassword($_POST['password']);
   $password2 = FormSanitizer::sanitizeFormPassword($_POST['password2']);
 
-  $account->register($firstName, $lastName, $userName, $email, $email2, $password, $password2);
-  // header("Location: {$_SERVER['PHP_SELF']}");
-  // exit();
+  $success = $account->register($firstName, $lastName, $userName, $email, $email2, $password, $password2);
+  if ($success) {
+    header("Location: index.php");
+    exit();
+  }
 }
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">

@@ -23,6 +23,49 @@ class Account
     $this->validateUserName($un);
     $this->validateEmail($em, $em2);
     $this->validatePasswords($pw, $pw2);
+
+    if (empty($this->errorArray)) {
+      return $this->insertUserDetails($fn, $ln, $un, $em, $pw);
+    }
+
+    return false;
+  }
+
+  public function login($un, $pw) {
+    $pw = hash("sha512", $pw);
+
+    $sql = <<<SQL
+      SELECT * 
+      FROM users 
+      WHERE username=:un AND password=:pw
+      LIMIT 1;
+    SQL;
+    $query = $this->con->prepare($sql);
+    $query->bindValue(":un", $un);
+    $query->bindValue(":pw", $pw);
+    $query->execute();
+
+    if ($query->rowCount() == 1) return true; 
+
+    $this->errorArray[] = Constants::LOGIN_FAIL;
+    return false;
+  }
+
+  private function insertUserDetails($fn, $ln, $un, $em, $pw)
+  {
+    $pw = hash("sha512", $pw);
+
+    $sql = <<<SQL
+      INSERT INTO users (firstName, lastName, userName, email, password) VALUES(:fn, :ln, :un, :em, :pw);
+    SQL;
+
+    $query = $this->con->prepare($sql);
+    $query->bindValue(":fn", $fn);
+    $query->bindValue(":ln", $ln);
+    $query->bindValue(":un", $un);
+    $query->bindValue(":em", $em);
+    $query->bindValue(":pw", $pw);
+    return $query->execute();
   }
 
   private function validateFirstName(string $fn)
