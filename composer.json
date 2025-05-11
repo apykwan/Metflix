@@ -7,6 +7,9 @@
     "autoload": {
         "psr-4": {
             "classes\\": "includes/classes"
-        }
+        },
+        "files": [
+            "includes/functions/index.php"
+        ]
     }
 }

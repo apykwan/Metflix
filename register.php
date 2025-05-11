@@ -8,13 +8,13 @@ $account = new Account(Database::getInstance()->getConnection());
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitButton'])) {
   $firstName = FormSanitizer::sanitizeFormString($_POST['firstName']);
   $lastName = FormSanitizer::sanitizeFormString($_POST['lastName']);
-  $userName = FormSanitizer::sanitizeFormUsername($_POST['userName']);
+  $username = FormSanitizer::sanitizeFormUsername($_POST['username']);
   $email = FormSanitizer::sanitizeFormEmail($_POST['email']);
   $email2 = FormSanitizer::sanitizeFormEmail($_POST['email2']);
   $password = FormSanitizer::sanitizeFormPassword($_POST['password']);
   $password2 = FormSanitizer::sanitizeFormPassword($_POST['password2']);
 
-  $success = $account->register($firstName, $lastName, $userName, $email, $email2, $password, $password2);
+  $success = $account->register($firstName, $lastName, $username, $email, $email2, $password, $password2);
   if ($success) {
     header("Location: index.php");
     exit();
@@ -42,20 +42,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitButton'])) {
       </div>
       <form method="POST">
         <?php echo $account->getError(Constants::FIRST_NAME_CHARACTERS); ?>
-        <input type="text" name="firstName" placeholder="First Name" required>
+        <input type="text" name="firstName" value="<?php getInputValue('firstName'); ?>" placeholder="First Name" required>
 
         <?php echo $account->getError(Constants::LAST_NAME_CHARACTERS); ?>
-        <input type="text" name="lastName" placeholder="Last Name" required>
+        <input type="text" name="lastName" value="<?php getInputValue('lastName'); ?>" placeholder="Last Name" required>
 
         <?php echo $account->getError(Constants::USER_NAME_CHARACTERS); ?>
         <?php echo $account->getError(Constants::USER_NAME_TAKEN); ?>
-        <input type="text" name="userName" placeholder="Username" required>
+        <input type="text" name="username" value="<?php getInputValue('username'); ?>" placeholder="Username" required>
 
         <?php echo $account->getError(Constants::EMAIL_NOT_MATCH); ?>
         <?php echo $account->getError(Constants::EMAIL_INVALID); ?>
         <?php echo $account->getError(Constants::EMAIL_TAKEN); ?>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="email" name="email2" placeholder="Confirm email" required>
+        <input type="email" name="email" value="<?php getInputValue('email'); ?>" placeholder="Email" required>
+        <input type="email" name="email2" value="<?php getInputValue('email2'); ?>" placeholder="Confirm email" required>
 
         <?php echo $account->getError(Constants::PASSWORD_NOT_MATCH); ?>
         <?php echo $account->getError(Constants::PASSWORD_LENGTH); ?>

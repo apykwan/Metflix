@@ -7,16 +7,16 @@ use classes\{FormSanitizer, Database, Account, Constants};
 $account = new Account(Database::getInstance()->getConnection());
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitButton'])) {
-  $userName = FormSanitizer::sanitizeFormUsername($_POST['userName']);
+  $username = FormSanitizer::sanitizeFormUsername($_POST['username']);
   $password = FormSanitizer::sanitizeFormPassword($_POST['password']);
 
-  $success = $account->login($userName, $password);
+  $success = $account->login($username, $password);
   if ($success) {
     $_SESSION["userLoggedIn"] = $username;
     header("Location: index.php");
-    exit();
   }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitButton'])) {
       </div>
       <form method="POST">
         <?php echo $account->getError(Constants::LOGIN_FAIL); ?>
-        <input type="text" name="userName" placeholder="Username" required>
+        <input 
+          type="text" 
+          name="username"
+          value="<?php getInputValue('username'); ?>" 
+          placeholder="Username" 
+          required
+        >
         <input type="password" name="password" placeholder="Password" required>
         <input type="submit" name="submitButton" value="SUBMIT" required>
       </form>

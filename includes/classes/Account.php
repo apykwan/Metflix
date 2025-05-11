@@ -20,7 +20,7 @@ class Account
   {
     $this->validateFirstName($fn);
     $this->validateLastName($ln);
-    $this->validateUserName($un);
+    $this->validateUsername($un);
     $this->validateEmail($em, $em2);
     $this->validatePasswords($pw, $pw2);
 
@@ -56,7 +56,7 @@ class Account
     $pw = hash("sha512", $pw);
 
     $sql = <<<SQL
-      INSERT INTO users (firstName, lastName, userName, email, password) VALUES(:fn, :ln, :un, :em, :pw);
+      INSERT INTO users (firstName, lastName, username, email, password) VALUES(:fn, :ln, :un, :em, :pw);
     SQL;
 
     $query = $this->con->prepare($sql);
@@ -82,7 +82,7 @@ class Account
     }
   }
 
-  private function validateUserName(string $un)
+  private function validateUsername(string $un)
   {
     if (strlen($un) < 2 || strlen($un) > 25) {
       $this->errorArray[] = Constants::USER_NAME_CHARACTERS;
