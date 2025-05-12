@@ -31,12 +31,16 @@ class PreviewProvider
               <h3>$name</h3>
 
               <div class='buttons'>
-                <button>Play</button>
-                <button>Volume</button>
+                <button>
+                  <i class='fas fa-play'></i>
+                  Play
+                </button>
+                <button id='volBtn'><i class='fas fa-volume-mute'></i></button>
               </div>
             </div>
         </div>
-    </div>";
+      </div>
+    ";
   }
 
   private function getRandomEntity() {

@@ -13,3 +13,5 @@ $preview = new PreviewProvider(
 );
 
 echo $preview->createPreviewVideo();
+
+require_once __DIR__ . '/includes/footer.php';
