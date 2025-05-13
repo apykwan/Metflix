@@ -14,7 +14,7 @@ class Entity
       $this->sqlData = $input;
     } else {
       $sql = <<<SQL
-      SELECT * FROM entities WHERE id=:id;
+      SELECT * FROM entities WHERE id=:id
       SQL;
       $query = $this->con->prepare($sql);
       $query->bindValue(':id', $input);
