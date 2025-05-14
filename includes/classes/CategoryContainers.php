@@ -49,7 +49,7 @@ class CategoryContainers
 
     return "
       <div class='category'>
-        <a href='category.php?id=$categoryId'>
+        <a href='entity.php?id=$categoryId'>
           <h3>$title</h3>
         </a>
 

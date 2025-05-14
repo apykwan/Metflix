@@ -116,7 +116,9 @@ a {
 
 .previewImage,
 .previewVideo {
+  max-height: 80vh;
   width: 100%;
+  object-fit: cover; 
 }
 
 .previewContainer {
@@ -192,9 +194,23 @@ button i {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
+  position: relative;
   max-width: 100%;
 }
 
 .entities::-webkit-scrollbar {
   display: none;
+}
+
+.previewCategories {
+  padding: 0 50px;
+}
+
+.errorBanner {
+  color: #fff;
+  position: absolute;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
 }

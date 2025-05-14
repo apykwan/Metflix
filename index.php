@@ -15,7 +15,7 @@ echo $preview->createPreviewVideo();
 
 $containers = new CategoryContainers(
   Database::getInstance()->getConnection(),
-  $_SESSION['userLoggedIn']
+  userLoggedIn()
 );
 echo $containers->showAllCategories();
 

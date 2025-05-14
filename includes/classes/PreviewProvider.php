@@ -8,7 +8,7 @@ class PreviewProvider
 {
   public function __construct(private \PDO $con, private string $username){}
 
-  public function createPreviewVideo(string | null $entity = null)
+  public function createPreviewVideo(Entity|null $entity = null)
   {
     if ($entity == null) {
       $entity = $this->getRandomEntity();
