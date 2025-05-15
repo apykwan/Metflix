@@ -4,17 +4,32 @@ declare(strict_types=1);
 
 require_once 'includes/header.php';
 
-use classes\{PreviewProvider, Database, CategoryContainers, Entity, EntityProvider};
+use classes\{
+  PreviewProvider, 
+  Entity, 
+  EntityProvider, 
+  ErrorMessage, 
+  SeasonProvider
+};
 
 if (!isset($_GET['id'])) {
-  header('Location: index.php');
+  ErrorMessage::show('No id is provided!', function () {
+    echo "
+      <script>
+        setTimeout(() => {
+          window.location.href = 'http://localhost/metflix/index.php';
+        }, 2500);
+      </script>
+    ";
+  });
 }
 
-$entityId = $_GET['id'];
-$entity = new Entity(Database::getInstance()->getConnection(), $entityId);
+$entity = new Entity(con(), $_GET['id']);
 
-$preview = new PreviewProvider(
-  Database::getInstance()->getConnection(),
-  userLoggedIn()
-);
+$preview = new PreviewProvider(con(), userLoggedIn());
 echo $preview->createPreviewVideo($entity);
+
+$seasonProvider = new SeasonProvider(con(), userLoggedIn());
+echo $seasonProvider->create($entity);
+
+require_once __DIR__ . '/includes/footer.php';

@@ -6,8 +6,12 @@ namespace classes;
 
 class ErrorMessage 
 {
-  public static function show(string $text)
+  public static function show(string $text, callable|null $cb = null)
   {
-    exit("<span class='errorBanner'>{$text}</span>");
+    echo "<span class='errorBanner'>{$text}</span>";
+
+    if ($cb != null) $cb();
+
+    exit();
   }
 }

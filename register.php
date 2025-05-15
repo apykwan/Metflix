@@ -1,9 +1,9 @@
 <?php
 include 'vendor/autoload.php';
 
-use classes\{FormSanitizer, Database, Account, Constants};
+use classes\{FormSanitizer, Account, Constants};
 
-$account = new Account(Database::getInstance()->getConnection());
+$account = new Account(con());
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitButton'])) {
   $firstName = FormSanitizer::sanitizeFormString($_POST['firstName']);
