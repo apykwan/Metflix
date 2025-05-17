@@ -9,7 +9,8 @@ use classes\{
   Entity, 
   EntityProvider, 
   ErrorMessage, 
-  SeasonProvider
+  SeasonProvider,
+  CategoryContainers
 };
 
 if (!isset($_GET['id'])) {
@@ -31,5 +32,8 @@ echo $preview->createPreviewVideo($entity);
 
 $seasonProvider = new SeasonProvider(con(), userLoggedIn());
 echo $seasonProvider->create($entity);
+
+$categoryContainer = new CategoryContainers(con(), userLoggedIn());
+echo $categoryContainer->showCategory($entity->getCategoryId(), 'You might also like');
 
 require_once __DIR__ . '/includes/footer.php';

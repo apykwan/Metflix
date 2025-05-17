@@ -14,42 +14,45 @@ function previewEnded() {
   $('.previewVideo').toggle();
   $('.previewImage').toggle();
 }
-
 $('.previewVideo').on('ended', previewEnded);
 
+function horizontalScroll(containers) {
+  containers.forEach(container => {
+    let isMouseDown = false;
+    let startX, scrollLeft;
+  
+    // Mouse down event to start dragging
+    container.addEventListener('mousedown', (e) => {
+      isMouseDown = true;
+      startX = e.pageX - container.offsetLeft; // Get the initial mouse position
+      scrollLeft = container.scrollLeft; // Get the initial scroll position
+      container.style.cursor = 'grabbing'; // Change cursor to grabbing
+    });
+  
+    // Mouse leave event to reset dragging state
+    container.addEventListener('mouseleave', () => {
+      isMouseDown = false;
+      container.style.cursor = 'grab'; // Reset cursor when mouse leaves
+    });
+  
+    // Mouse up event to stop dragging
+    container.addEventListener('mouseup', () => {
+      isMouseDown = false;
+      container.style.cursor = 'grab'; // Reset cursor when mouse is released
+    });
+  
+    // Mouse move event to perform the scroll while dragging
+    container.addEventListener('mousemove', (e) => {
+      if (!isMouseDown) return; // Only execute when mouse is down
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft; // Get the mouse position
+      const walk = (x - startX) * 2; // Calculate scroll distance
+      container.scrollLeft = scrollLeft - walk; // Scroll the container
+    });
+  });
+}
 
 const entitiesContainers = document.querySelectorAll('.entities');
-
-entitiesContainers.forEach(entities => {
-  let isMouseDown = false;
-  let startX, scrollLeft;
-
-  // Mouse down event to start dragging
-  entities.addEventListener('mousedown', (e) => {
-    isMouseDown = true;
-    startX = e.pageX - entities.offsetLeft; // Get the initial mouse position
-    scrollLeft = entities.scrollLeft; // Get the initial scroll position
-    entities.style.cursor = 'grabbing'; // Change cursor to grabbing
-  });
-
-  // Mouse leave event to reset dragging state
-  entities.addEventListener('mouseleave', () => {
-    isMouseDown = false;
-    entities.style.cursor = 'grab'; // Reset cursor when mouse leaves
-  });
-
-  // Mouse up event to stop dragging
-  entities.addEventListener('mouseup', () => {
-    isMouseDown = false;
-    entities.style.cursor = 'grab'; // Reset cursor when mouse is released
-  });
-
-  // Mouse move event to perform the scroll while dragging
-  entities.addEventListener('mousemove', (e) => {
-    if (!isMouseDown) return; // Only execute when mouse is down
-    e.preventDefault();
-    const x = e.pageX - entities.offsetLeft; // Get the mouse position
-    const walk = (x - startX) * 2; // Calculate scroll distance
-    entities.scrollLeft = scrollLeft - walk; // Scroll the container
-  });
-});
+const videosContainers = document.querySelectorAll('.videos');
+horizontalScroll(entitiesContainers);
+horizontalScroll(videosContainers);

@@ -16,10 +16,29 @@ class CategoryContainers
     $query = $this->con->prepare($sql);
     $query->execute();
 
-    $html = "<div class='previewCategories'>";
+    $html = "<div class='previewCategories noScroll'>";
 
     while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
       $html .= $this->getCategoryHtml($row, null, true, true);
+    }
+
+    return $html . "</div>";
+  }
+
+  public function showCategory(string|int $categoryId, string|null $title = null) 
+  {
+    $sql = <<<SQL
+    SELECT * FROM categories
+    WHERE id=:id
+    SQL;
+    $query = $this->con->prepare($sql);
+    $query->bindValue(":id", $categoryId);
+    $query->execute();
+
+    $html = "<div class='previewCategories'>";
+
+    while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
+      $html .= $this->getCategoryHtml($row, $title, true, true);
     }
 
     return $html . "</div>";

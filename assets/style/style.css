@@ -190,15 +190,15 @@ button i {
   padding: 10px 0;
 }
 
-.entities {
+.entities,
+.videos {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  position: relative;
-  max-width: 100%;
 }
 
-.entities::-webkit-scrollbar {
+.entities::-webkit-scrollbar,
+.videos::-webkit-scrollbar {
   display: none;
 }
 
@@ -213,4 +213,44 @@ button i {
   width: 100%;
   text-align: center;
   font-size: 18px;
+}
+
+.season {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 50px;
+}
+
+.episodeContainer {
+  display: inline-flex;
+  ustify-content: center;
+  margin-right: 4px;
+}
+
+.episodeContainer .contents {
+  display: flex;
+  flex-direction: column;
+  width: 230px;
+}
+
+.episodeContainer img {
+  width: 230px;
+  height: 129px;
+  object-fit: cover;
+}
+
+.episodeContainer .videoInfo h4,
+.episodeContainer .videoInfo span {
+  color: #fff;
+  width: 100%;
+  white-space: normal;
+}
+
+.episodeCOntainer .videoInfo {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.previewCategories.noScroll .category .entites {
+  white-space: normal;
 }
