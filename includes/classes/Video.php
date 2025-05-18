@@ -58,4 +58,17 @@ class Video
   {
     return $this->sqlData['episode'];
   }
+
+  public function incrementViews()
+  {
+    $sql = <<<SQL
+    UPDATE videos
+    SET views=views+1
+    WHERE id=:id
+    SQL;
+
+    $query = $this->con->prepare($sql);
+    $query->bindValue(':id', $this->getId(), \PDO::PARAM_INT);
+    $query->execute();
+  }
 }
