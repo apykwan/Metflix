@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+require_once 'config.php';
 require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/vendor/autoload.php';
 
 use classes\{PreviewProvider, CategoryContainers};
 
