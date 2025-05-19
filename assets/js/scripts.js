@@ -81,3 +81,5 @@ function startHideTimer() {
 function initVideo() {
   startHideTimer();
 }
+
+const msg = 'hello';

@@ -40,6 +40,12 @@ $video->incrementViews();
 
 <script>
   (function(videoId, username) {
+    startHideTimer()
+    setStartTime(videoId, username);
+    updateProgressTimer(videoId, username);
+  })("<?php echo $video->getId(); ?>", "<?php echo userLoggedIn() ?>");
+
+  function startHideTimer() {
     let timeout = null;
 
     $(document).on("mousemove", function() {
@@ -52,9 +58,7 @@ $video->incrementViews();
       }, 1500);
 
     });
-
-    updateProgressTimer(videoId, username);
-  })("<?php echo $video->getId(); ?>", "<?php echo userLoggedIn() ?>");
+  }
 
   function updateProgressTimer(videoId, username) {
     addDuration(videoId, username);
@@ -108,6 +112,24 @@ $video->incrementViews();
       if (data !== null && data !== "") {
         alert(data);
       }
+    });
+  }
+
+  function setStartTime(videoId, username) {
+    $.post("ajax/getProgress.php", {
+      videoId,
+      username
+    }, function(data) {
+      if (isNaN(data)) {
+        alert(data);
+        return;
+      }
+      console.log('start time');
+      console.log(data);
+      $("video").on("canplay", function() {
+        this.currentTime = data;
+        $("video").off("canplay");
+      })
     });
   }
 </script>
