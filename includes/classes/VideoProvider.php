@@ -11,7 +11,7 @@ class VideoProvider
     $sql = <<<SQL
     SELECT * 
     FROM videos
-    WHERE entityId=:entityId AND videoId != :videoId AND (
+    WHERE entityId=:entityId AND id != :videoId AND (
       (season = :season AND episode > :episode) OR season > :season
     )
     ORDER BY season, episode ASC
