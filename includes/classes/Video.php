@@ -9,7 +9,7 @@ class Video
   private array $sqlData; 
   private Entity $entity;
 
-  public function __construct(private \PDO $con, string|array $input)
+  public function __construct(private \PDO $con, int|string|array $input)
   {
     if (is_array($input)) {
       $this->sqlData = $input;
@@ -81,5 +81,35 @@ class Video
     $query = $this->con->prepare($sql);
     $query->bindValue(':id', $this->getId(), \PDO::PARAM_INT);
     $query->execute();
+  }
+
+  public function getSeasonAndEpisode()
+  {
+    if ($this->isMOvie()) return;
+
+    $season = $this->getSeasonNumber();
+    $episode = $this->getEpisodeNumber();
+
+    return "Season {$season}, Episode {$episode}";
+  }
+
+  public function isMovie() 
+  {
+    return $this->sqlData['isMovie'] == 1;
+  }
+
+  public function isInProgress(string $username)
+  {
+    $sql = <<<SQL
+    SELECT * 
+    FROM video_progress
+    WHERE videoId=:videoId AND username=:username
+    SQL;
+    $query = $this->con->prepare($sql);
+    $query->bindValue(":videoId", $this->getId());
+    $query->bindValue(":username", $username);
+    $query->execute();
+
+    return $query->rowCount() != 0;
   }
 }

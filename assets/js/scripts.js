@@ -1,14 +1,10 @@
-function volumeToggle() {
-  const $video = $('.previewVideo'); 
-  const muted = $video.prop('muted'); 
+function volumeToggle(button) {
+  var muted = $(".previewVideo").prop("muted");
+  $(".previewVideo").prop("muted", !muted);
 
-  $video.prop('muted', !muted);
-
-  $('#volBtn').find("i").toggleClass("fa-volume-mute");
-  $('#volBtn').find("i").toggleClass("fa-volume-up");
+  $(button).find("i").toggleClass("fa-volume-mute");
+  $(button).find("i").toggleClass("fa-volume-up");
 }
-
-$('#volBtn').click(volumeToggle); 
 
 function previewEnded() {
   $('.previewVideo').toggle();
@@ -82,4 +78,16 @@ function initVideo() {
   startHideTimer();
 }
 
-const msg = 'hello';
+function restartVideo() {
+  $("video")[0].currentTime = 0;
+  $("video")[0].play();
+  $(".upNext").fadeOut();
+}
+
+function watchVideo(video) {
+  window.location.href = `watch.php?id=${video}`;
+}
+
+function showUpNext() {
+  $(".upNext").fadeIn();
+}

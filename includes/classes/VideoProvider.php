@@ -43,4 +43,36 @@ class VideoProvider
     $row = $query->fetch(\PDO::FETCH_ASSOC);
     return new Video($con, $row);
   }
+
+  public static function getEntityVideoForUser(\PDO $con, string|int $entityId, string $username)
+  {
+    $sql = <<<SQL
+    SELECT videoId 
+    FROM video_progress as vp
+    JOIN videos as v ON v.id=vp.videoId;
+    WHERE v.entityId=:entityId AND vp.username=:username
+    ORDER BY vp.dateModified DESC
+    LIMIT 1
+    SQL;
+    $query = $con->prepare($sql);
+    $query->bindValue(':entityId', $entityId);
+    $query->bindValue(':username', $username);
+    $query->execute();
+
+    if ($query->rowCount() == 0) {
+      $sql = <<<SQL
+      SELECT id 
+      FROM videos 
+      WHERE entityId=:entityId
+      ORDER BY season, episode ASC
+      LIMIT 1
+      SQL;
+
+      $query = $con->prepare($sql);
+      $query->bindValue(':entityId', $entityId);
+      $query->execute();
+    }
+
+    return $query->fetchColumn();
+  }
 }
