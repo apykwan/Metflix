@@ -19,6 +19,28 @@ class PreviewProvider
     return $this->createPreviewVideo($entitiesArray[0]);
   }
 
+  public function createMoviesPreviewVideo()
+  {
+    $entitiesArray = EntityProvider::getMoviesEntities(con(), null, 1);
+
+    if (sizeof($entitiesArray) == 0) {
+      ErrorMessage::show("No movies to display");
+    }
+
+    return $this->createPreviewVideo($entitiesArray[0]);
+  }
+
+  public function createCategoryPreviewVideo($categoryId)
+  {
+    $entitiesArray = EntityProvider::getEntities(con(), $categoryId, 1);
+
+    if (sizeof($entitiesArray) == 0) {
+      ErrorMessage::show("No movies to display");
+    }
+
+    return $this->createPreviewVideo($entitiesArray[0]);
+  }
+
   public function createPreviewVideo(Entity|null $entity = null)
   {
     if ($entity == null) {
