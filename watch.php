@@ -8,7 +8,8 @@ use classes\{
   ErrorMessage,
 };
 
-require_once 'includes/header.php';
+$hideNav = true;
+require_once __DIR__ . '/includes/header.php';
 
 if (!isset($_GET['id'])) {
   ErrorMessage::show('No id is provided!', function () {
@@ -36,7 +37,7 @@ $upNextVideo = VideoProvider::getUpNext(con(), $video);
     <h1><?php echo $video->getTitle() ?></h1>
   </div>
 
-  <div class="videoControls upNext">
+  <div class="videoControls upNext" style="display:none;">
     <button onclick="restartVideo();"><i class="fas fa-redo"></i></button>
 
     <div class="upNextContainer">

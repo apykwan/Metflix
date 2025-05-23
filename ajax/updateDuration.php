@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-require_once '../vendor/autoload.php';
-require_once '../config.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config.php';
 
 if (isset($_POST['videoId']) && isset($_POST['username']) && isset($_POST['progress'])) {
   $con = con();
