@@ -95,4 +95,26 @@ class EntityProvider
 
     return $result;
   }
+
+  public static function getSearchEntities(\PDO $con, string $term)
+  {
+    $sql = <<<SQL
+    SELECT * 
+    FROM entities
+    WHERE name LIKE CONCAT('%', :term, '%')
+    LIMIT 30
+    SQL;
+
+    $query = $con->prepare($sql);
+    $query->bindValue(':term', $term, \PDO::PARAM_STR);
+    $query->execute();
+
+    $result = [];
+
+    while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
+      $result[] = new Entity($con, $row);
+    }
+
+    return $result;
+  }
 }
