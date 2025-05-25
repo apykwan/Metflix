@@ -97,3 +97,8 @@ function watchVideo(video) {
 function showUpNext() {
   $(".upNext").fadeIn();
 }
+
+$(document).ready(function() {
+  const currentYear = new Date().getFullYear();
+  $('.year').text(currentYear);
+});
