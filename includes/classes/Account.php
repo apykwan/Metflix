@@ -33,6 +33,50 @@ class Account
     return false;
   }
 
+  public function updatePassword (string $oldPw, string $newPw, string $newPw2, string $un)
+  {
+    $this->validateOldPassword($oldPw, $un);
+    $this->validatePasswords($newPw, $newPw2);
+
+    if (empty($this->errorArray)) {
+      $pw = hash("sha512", $newPw);
+
+      $sql = <<<SQL
+      UPDATE users 
+      SET password=:pw
+      WHERE username=:un
+      SQL;
+
+      $query = $this->con->prepare($sql);
+      $query->bindValue(":pw", $pw);
+      $query->bindValue(":un", $un);
+      $query->execute();
+
+      return $query->execute();
+    }
+    return false;
+  }
+
+  private function validateOldPassword ($oldPw, $un)
+  {
+    $pw = hash("sha512", $oldPw);
+
+    $sql = <<<SQL
+      SELECT * 
+      FROM users 
+      WHERE username=:un AND password=:pw
+      LIMIT 1;
+    SQL;
+    $query = $this->con->prepare($sql);
+    $query->bindValue(":un", $un);
+    $query->bindValue(":pw", $pw);
+    $query->execute();
+
+    if ($query->rowCount() == 0) {
+      $this->errorArray[] = Constants::PASSWORD_INCORRECT;
+    }
+  }
+
   public function register(
     string $fn,
     string $ln,
@@ -196,5 +240,10 @@ class Account
     if (in_array($error, $this->errorArray)) {
       return "<span class='errorMessage'>{$error}</span>";
     }
+  }
+
+  public function getFirstError()
+  {
+    if (!empty($this->errorArray)) return $this->errorArray[0];
   }
 }

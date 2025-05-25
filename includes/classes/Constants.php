@@ -15,4 +15,5 @@ class Constants {
   const PASSWORD_NOT_MATCH = "Passwords don't match";
   const PASSWORD_LENGTH = "Password must be between 4 and 25 characters";
   const LOGIN_FAIL = "Your username or password was inccorect";
+  const PASSWORD_INCORRECT = "Your old password is incorrect";
 }
