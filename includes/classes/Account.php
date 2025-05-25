@@ -8,6 +8,31 @@ class Account
 
   public function __construct(private \PDO $con) {}
 
+  public function updateDetails($fn, $ln, $em, $un)
+  {
+    $this->validateFirstName($fn);
+    $this->validateLastName($ln);
+    $this->validateNewEmail($em, $un);
+
+    if (empty($this->errorArray)) {
+      $sql = <<<SQL
+      UPDATE users 
+      SET firstName=:fn, lastName=:ln, email=:em
+      WHERE username=:un
+      SQL;
+
+      $query = $this->con->prepare($sql);
+      $query->bindValue(":fn", $fn);
+      $query->bindValue(":ln", $ln);
+      $query->bindValue(":em", $em);
+      $query->bindValue(":un", $un);
+      $query->execute();
+
+      return $query->execute();
+    }
+    return false;
+  }
+
   public function register(
     string $fn,
     string $ln,
@@ -123,6 +148,29 @@ class Account
     LIMIT 1
     SQL;
     $query = $this->con->prepare($sql);
+    $query->bindValue(":em", $em);
+    $query->execute();
+
+    if ($query->rowCount() != 0) {
+      $this->errorArray[] = constants::EMAIL_TAKEN;
+    }
+  }
+
+  private function validateNewEmail(string $em, string $un)
+  {
+    if (!filter_var($em, FILTER_VALIDATE_EMAIL)) {
+      $this->errorArray[] = constants::EMAIL_INVALID;
+      return;
+    }
+
+    $sql = <<<SQL
+    SELECT *
+    FROM users
+    WHERE username != :un AND email = :em 
+    LIMIT 1
+    SQL;
+    $query = $this->con->prepare($sql);
+    $query->bindValue(":un", $un);
     $query->bindValue(":em", $em);
     $query->execute();
 

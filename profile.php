@@ -2,9 +2,23 @@
 
 declare(strict_types=1);
 
-use classes\{User};
+use classes\{User, Account, FormSanitizer};
 
 require_once __DIR__ . '/includes/header.php';
+
+if (isset($_POST['saveDetailsButton'])) {
+  $account = new Account(con());
+
+  $firstName = FormSanitizer::sanitizeFormString($_POST["firstName"]);
+  $lastName = FormSanitizer::sanitizeFormString($_POST["lastName"]);
+  $email = FormSanitizer::sanitizeFormString($_POST["email"]);
+
+  if ($account->updateDetails($firstName, $lastName, $email, userLoggedIn())) {
+    echo 'success';
+  } else {
+    echo 'failed';
+  }
+}
 ?>
 
 <div class="settingsContainer column">
@@ -17,7 +31,6 @@ require_once __DIR__ . '/includes/header.php';
 
       $firstName = isset($_POST['firstName']) ? $_POST['firstName'] : $user->getFirstName();
       $lastName = isset($_POST['lastName']) ? $_POST['lastName'] : $user->getLastName();
-      $username = isset($_POST['username']) ? $_POST['username'] : $user->getUsername();
       $email = isset($_POST['email']) ? $_POST['email'] : $user->getEmail();
       ?>
 
