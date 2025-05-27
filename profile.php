@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-use classes\{User, Account, FormSanitizer};
+use classes\{User, Account, FormSanitizer, Billing};
+use PayPalHttp\HttpException;
 
 require_once __DIR__ . '/includes/header.php';
 
 $detailsMessage = "";
 $passwordMessage = "";
+$subscriptionMessage = "";
+$user = new User(con(), userLoggedIn());
 
 if (isset($_POST['saveDetailsButton'])) {
   $account = new Account(con());
@@ -60,10 +63,39 @@ if (
       </div>
     ";
   }
-} else {
-  $passwordMessage = "
+}
+
+if (isset($_GET['success']) && $_GET['success'] === 'true' && isset($_GET['subscription_id']) && $_GET['token']) {
+  $subscriptionMessage = "
     <div class='alertError'>
-      Please enter Old password, new password and confirm password
+      User cancelled or something went wrong!
+    </div>
+  ";
+  
+  try {
+    $subscriptionId = $_GET['subscription_id'];
+    $accessToken = getAccessToken($_ENV['PAYPAL_CLIENT_ID'], $_ENV['PAYPAL_SECRET_KEY']);
+    $details = getSubscriptionDetails($accessToken, $subscriptionId);
+    $nextBillingDate = $details['billing_info']['next_billing_time'] ?? null;
+
+    $result = Billing::insertDetails(con(), $subscriptionId, $_GET['token'], userLoggedIn(), $nextBillingDate);
+    $result = $result && $user->setIsSubscribed(1);
+
+    if ($result) {
+      $subscriptionMessage = "
+        <div class='alertSuccess'>
+          Your are all signed up!
+        </div>
+      ";
+    }
+  } catch (HttpException $ex) {
+    echo $ex->statusCode;
+    print_r($ex->getMessage());
+  }
+} else if (isset($_GET['success']) && $_GET['success'] === 'false') {
+  $subscriptionMessage = "
+    <div class='alertError'>
+      User cancelled or something went wrong!
     </div>
   ";
 }
@@ -75,8 +107,7 @@ if (
       <h2>User password</h2>
 
       <?php
-      $user = new User(con(), userLoggedIn());
-
+    
       $firstName = isset($_POST['firstName']) ? $_POST['firstName'] : $user->getFirstName();
       $lastName = isset($_POST['lastName']) ? $_POST['lastName'] : $user->getLastName();
       $email = isset($_POST['email']) ? $_POST['email'] : $user->getEmail();
@@ -124,6 +155,18 @@ if (
 
   <div class="formSection">
     <h2>Subscription</h2>
+
+    <div class="message">
+      <?php echo $subscriptionMessage ?>
+    </div>
+
+    <?php 
+      if ($user->getIsSubscribed()) {
+        echo '<h3>You are subscribed! Go to PayPal to cancel</h3>';
+      } else {
+        echo "<a href='billing.php'>Subscribe to Metflix</a>";
+      }
+    ?>
   </div>
 
 </div>

@@ -20,6 +20,7 @@ a h3:hover {
 
 a {
   text-decoration: none;
+  color: #0654ba;
 }
 
 .wrapper {
@@ -454,4 +455,10 @@ button i {
 
 .alertError {
   color: #dc1928;
+}
+
+.formSection h3 {
+  padding: 0;
+  color: #fff;
+  font-size: 20px;
 }

@@ -11,6 +11,7 @@ class ComposerStaticInit165aa45b6fe105d41634b98d700f6500
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '3a3903dcb7db2d0a5ff70d5315fe4f2c' => __DIR__ . '/../..' . '/includes/functions/index.php',
+        '97996a5efe8774bb27d283ec8f0b4e69' => __DIR__ . '/../..' . '/includes/functions/configPaypal.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -23,10 +24,13 @@ class ComposerStaticInit165aa45b6fe105d41634b98d700f6500
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Sample\\' => 7,
         ),
         'P' => 
         array (
             'PhpOption\\' => 10,
+            'PayPalHttp\\' => 11,
+            'PayPalCheckoutSdk\\' => 18,
         ),
         'G' => 
         array (
@@ -55,9 +59,21 @@ class ComposerStaticInit165aa45b6fe105d41634b98d700f6500
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
+        'Sample\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paypal/paypal-checkout-sdk/samples',
+        ),
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'PayPalHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paypal/paypalhttp/lib/PayPalHttp',
+        ),
+        'PayPalCheckoutSdk\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paypal/paypal-checkout-sdk/lib/PayPalCheckoutSdk',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (
