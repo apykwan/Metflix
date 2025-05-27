@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use classes\{
+  User,
   Video,
   VideoProvider,
   ErrorMessage,
@@ -21,6 +22,12 @@ if (!isset($_GET['id'])) {
       </script>
     ";
   });
+}
+
+$user = new User(con(), userLoggedIn());
+
+if (!$user->getIsSubscribed()) {
+  ErrorMessage::show("You must be subscribed to view this. <a href='profile.php'>Click here to subscribe</a>");
 }
 
 $video = new Video(con(), $_GET['id']);
